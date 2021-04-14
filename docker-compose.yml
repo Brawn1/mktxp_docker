@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  mktxp:
+    restart: on-failure
+    image: guenterbailey/mktxp:latest
+    volumes:
+      - ./mktxp:/root/mktxp:rw
+    ports:
+      - "0.0.0.0:49090:49090"
+    networks:
+      - traefik-proxy
+
+networks:
+   traefik-proxy:
+        external: true

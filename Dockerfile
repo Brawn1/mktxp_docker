@@ -1,14 +1,22 @@
-FROM python:3.8-slim-buster
+FROM python:3.8-slim-bullseye
 MAINTAINER Guenter Bailey
 
 RUN apt-get update && \
 	apt-get install -y git nano && \
 	rm -rf /var/lib/apt/lists/* && \
-	pip install git+https://github.com/akpw/mktxp && \
-	mkdir -p /root/mktxp
+	pip install git+https://github.com/akpw/mktxp
 
-COPY config/_mktxp.conf /root/mktxp/_mktxp.conf
-COPY config/mktxp.conf /root/mktxp/mktxp.conf
+RUN mkdir -p /home/mktxp/mktxp && \
+    useradd -M -d /home/mktxp -s /bin/bash mktxp
+
+WORKDIR /home/mktxp
+
+COPY config/_mktxp.conf /home/mktxp/mktxp/_mktxp.conf
+COPY config/mktxp.conf /home/mktxp/mktxp/mktxp.conf
+RUN chown -R mktxp:mktxp /home/mktxp
+
+USER mktxp
 
 EXPOSE 49090
-CMD ["mktxp", "export"]
+ENTRYPOINT ["/usr/local/bin/mktxp"]
+CMD ["export"]

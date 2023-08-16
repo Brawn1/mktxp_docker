@@ -416,7 +416,20 @@ mktxp is running as pid 36704
 ## Installing Development version
 - Clone the repo, then run: `$ python setup.py develop`
 
+## Docker Compose
 
+```yaml
+version: "3"
+
+services:
+  mktxp:
+    restart: on-failure
+    image: guenterbailey/mktxp:latest
+    volumes:
+      - ./mktxp:/root/mktxp:rw
+    ports:
+      - "0.0.0.0:49090:49090"
+```
 **Running Tests**
 - TDB
 - Run via: `$ python setup.py test`

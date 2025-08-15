@@ -1,10 +1,14 @@
-FROM python:3.8-slim-bullseye
-MAINTAINER Guenter Bailey
+FROM python:3.9-slim-bookworm
+LABEL maintainer="Guenter Bailey" \
+      version="v1.2.11" \
+      description="MKTXP is a Prometheus Exporter for Mikrotik RouterOS devices."
 
 RUN apt-get update && \
 	apt-get install -y git nano && \
-	rm -rf /var/lib/apt/lists/* && \
-	pip install git+https://github.com/akpw/mktxp
+	rm -rf /var/lib/apt/lists/*
+
+RUN pip install -U pip && \
+	pip install git+https://github.com/akpw/mktxp@v1.2.11
 
 RUN mkdir -p /home/mktxp/mktxp && \
     useradd -M -d /home/mktxp -s /bin/bash mktxp
